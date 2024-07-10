@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:dx="http://schemas.devexpress.com/maui"
+             x:Class="DXMauiApp1.Pages.LoginPage"
+             Title="LoginPage">
+
+    <AbsoluteLayout 
+        Padding="20"
+        InputTransparent="{Binding Loading}"
+    >
+        <VerticalStackLayout 
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+            AbsoluteLayout.LayoutFlags="All"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="Center"
+            Opacity="{Binding Opacity}"  
+        >
+            <dx:TextEdit
+                Text="{Binding Username, Mode=TwoWay}"
+                FocusedBorderColor="Orange"
+                HasError="{Binding UsernameHasError}"
+                LabelText="Username"
+                HelpText="*Required"
+                PlaceholderText="Enter your username"
+                Margin="0,10"
+                StartIcon="person_icon.svg"
+                ErrorText="{Binding UsernameErrorText}"
+                TextChangedCommand="{Binding UsernameTouchedCommand}"
+            />
+            <dx:PasswordEdit
+                Text="{Binding Password, Mode=TwoWay}"
+                FocusedBorderColor="Orange"
+                HasError="{Binding PasswordHasError}"
+                LabelText="Password"
+                HelpText="*Required"
+                PlaceholderText="Enter your password"
+                Margin="0,10"
+                StartIcon="lock_icon.svg"
+                ErrorText="{Binding PasswordErrorText}"
+                TextChangedCommand="{Binding PasswordTouchedCommand}"
+            />
+            <dx:DXButton 
+                Content="Login"
+                BackgroundColor="Orange"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Margin="0, 10"
+                Command="{Binding LoginCommand}"
+                />
+        </VerticalStackLayout>
+        <dx:RadialProgressBar 
+            Fill="LightGray"
+            ValueIndicatorFill="Orange"
+            Value="0.3" 
+            StartValue="0" EndValue="100"
+            StartAngle="90" 
+            SweepAngle="360"
+            WidthRequest="70"
+            Thickness="7"
+            ValueIndicatorThickness="7"
+            IsVisible="{Binding Loading, Mode=TwoWay}"
+            IsIndeterminate="True"
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+            AbsoluteLayout.LayoutFlags="All"
+        />
+    </AbsoluteLayout>
+</ContentPage>
