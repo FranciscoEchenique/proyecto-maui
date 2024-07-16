@@ -6,7 +6,26 @@
              x:Class="DXMauiApp1.MainPage"
              xmlns:dxco="clr-namespace:DevExpress.Maui.Controls;assembly=DevExpress.Maui.Controls"
              xmlns:local="clr-namespace:DXMauiApp1"
+             xmlns:views="clr-namespace:DXMauiApp1.Views"
+             Shell.NavBarIsVisible="true"
+             Shell.NavBarHasShadow="true"
              >
+
+    <Shell.TitleView>
+        <Grid Padding="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding Username}" HorizontalOptions="End" VerticalOptions="Center" Grid.Column="0" />
+            <Image Source="logout_icon.svg" HorizontalOptions="End"  VerticalOptions="Center" Grid.Column="1">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+    </Shell.TitleView>
+
     <ContentPage.Resources>
         <Color x:Key="light_gray">#f7f8f9</Color>
         <Color x:Key="selected_blue">#1e88e5</Color>
@@ -25,11 +44,7 @@
             SelectedHeaderTextColor="Orange"
         >
             <dxco:TabViewItem.Content>
-                <Grid>
-                    <Label Text="Este es el home" 
-                           HorizontalOptions="Center" 
-                           VerticalOptions="CenterAndExpand"/>
-                </Grid>
+                <views:HomeContent></views:HomeContent>
             </dxco:TabViewItem.Content>
         </dxco:TabViewItem>
         <dxco:TabViewItem 

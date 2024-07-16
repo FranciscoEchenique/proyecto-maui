@@ -1,5 +1,10 @@
 ﻿using DevExpress.Maui;
 using DevExpress.Maui.Core;
+using DXMauiApp1.Models;
+using DXMauiApp1.Pages;
+using DXMauiApp1.Services;
+using DXMauiApp1.Services.Interfaces;
+using DXMauiApp1.Views;
 
 namespace DXMauiApp1
 {
@@ -26,6 +31,12 @@ namespace DXMauiApp1
                     fonts.AddFont("roboto-medium.ttf", "Roboto-Medium");
                     fonts.AddFont("roboto-bold.ttf", "Roboto-Bold");
                 });
+
+            builder
+                .RegisterViews()
+                .RegisterViewModels()
+                .RegisterServices();
+
             DevExpress.Maui.Charts.Initializer.Init();
             DevExpress.Maui.CollectionView.Initializer.Init();
             DevExpress.Maui.Controls.Initializer.Init();
@@ -34,5 +45,33 @@ namespace DXMauiApp1
             DevExpress.Maui.Scheduler.Initializer.Init();
             return builder.Build();
         }
+        public static MauiAppBuilder RegisterServices(this MauiAppBuilder mauiAppBuilder)
+        {
+            mauiAppBuilder.Services.AddSingleton<IHttpClientService, HttpClientService>();
+            mauiAppBuilder.Services.AddSingleton(typeof(IApiService<>), typeof(ApiService<>));
+            mauiAppBuilder.Services.AddSingleton<INavigationService, NavigationService>();
+            mauiAppBuilder.Services.AddSingleton<IAuthService, AuthService>();
+
+            return mauiAppBuilder;
+        }
+
+        public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder mauiAppBuilder)
+        {
+            mauiAppBuilder.Services.AddSingleton<LoginPageModel>();
+            mauiAppBuilder.Services.AddSingleton<MainPageModel>();
+            mauiAppBuilder.Services.AddSingleton<HomePageModel>();
+
+            return mauiAppBuilder;
+        }
+
+        public static MauiAppBuilder RegisterViews(this MauiAppBuilder mauiAppBuilder)
+        {
+            mauiAppBuilder.Services.AddSingleton<MainPage>();
+            mauiAppBuilder.Services.AddSingleton<LoginPage>();
+            //mauiAppBuilder.Services.AddSingleton<HomeContent>();
+
+            return mauiAppBuilder;
+        }
     }
+
 }

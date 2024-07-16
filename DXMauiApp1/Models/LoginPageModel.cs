@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DXMauiApp1.Dtos;
+using DXMauiApp1.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace DXMauiApp1.Models
 {
     public partial class LoginPageModel : ObservableObject
     {
-        private string _url = "https://70q8bmkn-44342.brs.devtunnels.ms/api/Authentication/Authenticate";
-        private string _token;
-        private HttpClient _httpClient = new HttpClient();
+        private readonly INavigationService _navigationService;
 
+        private readonly IAuthService _authService;
+        public LoginPageModel(INavigationService navigationService, IAuthService authService)
+        {
+            _navigationService = navigationService;
+            _authService = authService;
+        }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(UsernameErrorText))]
@@ -65,13 +70,15 @@ namespace DXMauiApp1.Models
                 Loading = true;
                 Opacity = 0.5m;
 
-                string json = $@"{{""userName"": ""{Username}"", ""password"": ""{Password}"" }}";
-                StringContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync(_url, httpContent);
+                (bool, string) loginResponse = await _authService.Login(Username, Password);
 
-                if (response.IsSuccessStatusCode)
+                bool responseSuccessful = loginResponse.Item1;
+
+                string token = loginResponse.Item2;
+
+                if (responseSuccessful)
                 {
-                    var token = await response.Content.ReadAsStringAsync();
+                    
                     if (string.IsNullOrEmpty(token))
                     {
                         await Shell.Current.DisplayAlert("Login error", "Invalid credentials.", "OK");
@@ -80,19 +87,17 @@ namespace DXMauiApp1.Models
                         return;
                     }
 
-                    _token = token;
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
                     var usuario = new Usuario()
                     {
                         UserName = Username
                     };
 
                     App.Usuario = usuario;
-                    App.Token = _token;
+                    App.Token = token;
+                    App.IsLoged = true;
 
                     Preferences.Set("Username", Username);
-                    Preferences.Set("Token", _token);
+                    Preferences.Set("Token", token);
 
                     Loading = false;
                     Opacity = 1;
@@ -102,13 +107,13 @@ namespace DXMauiApp1.Models
                     IsUsernameTouched = false;
 
                     await Shell.Current.DisplayAlert("Login", "Login successful!", "OK");
-                    await Shell.Current.GoToAsync("//MainPage");
+                    await _navigationService.NavigateTo<MainPage>(true);
                 }
                 else
                 {
                     Opacity = 1;
                     Loading = false;
-                    await Shell.Current.DisplayAlert("Login error", "Invalid credentials.", "OK");
+                    await Shell.Current.DisplayAlert("Login error", "Internal server error.", "OK");
                 }
             }
             catch(Exception ex)

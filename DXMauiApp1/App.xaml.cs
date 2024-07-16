@@ -4,6 +4,7 @@ namespace DXMauiApp1
 {
     public partial class App : Application
     {
+        public static bool IsLoged { get; set; } = false;
         public static string Token { get; set; }
         public static Usuario Usuario { get; set; }
         public App()
@@ -18,6 +19,7 @@ namespace DXMauiApp1
             {
                 Usuario = new Usuario() { UserName = username};
                 Token = Preferences.Get("Token", null);
+                IsLoged = true;
                 Shell.Current.GoToAsync("//MainPage");
             }
             else

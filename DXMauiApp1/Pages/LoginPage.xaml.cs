@@ -6,12 +6,13 @@ namespace DXMauiApp1.Pages;
 
 public partial class LoginPage : ContentPage
 {
-    LoginPageModel viewModel;
-    public LoginPage()
+    private readonly LoginPageModel _viewModel;
+    public LoginPage(LoginPageModel viewModel)
 	{
 		InitializeComponent();
-        viewModel = new LoginPageModel();
-        BindingContext = viewModel;
-	}
+        _viewModel = viewModel;
+        BindingContext = _viewModel;
+        Shell.SetNavBarIsVisible(this, false);
+    }
 
 }

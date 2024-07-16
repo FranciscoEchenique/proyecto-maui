@@ -6,24 +6,19 @@ namespace DXMauiApp1
 {
     public partial class MainPage : ContentPage
     {
-        MainPageModel viewModel;
-        public MainPage()
+        private readonly MainPageModel _viewModel;
+        public MainPage(MainPageModel viewModel)
         {
             InitializeComponent();
-            viewModel = new MainPageModel();
-            BindingContext = viewModel;
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            viewModel.Username = App.Usuario.UserName;
-            UsernameLabel.Text = viewModel.Username;
-
-        }
-        async void OnOpenWebButtonClicked(System.Object sender, System.EventArgs e)
-        {
-            await Browser.OpenAsync("https://www.devexpress.com/maui/");
+            _viewModel.Username = App.Usuario.UserName;
+            UsernameLabel.Text = _viewModel.Username;
         }
 
        

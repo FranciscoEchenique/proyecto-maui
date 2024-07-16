@@ -7,10 +7,10 @@
     <Color x:Key="Primary">#FFFFFF</Color>
     <Color x:Key="PrimaryDark">#1D1A22</Color>
     <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <Color x:Key="Tertiary">Orange</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
-    <Color x:Key="AccentLight">#4F378B</Color>
+    <Color x:Key="AccentLight">Orange</Color>
     <Color x:Key="AccentDark">#EADDFF</Color>
     <Color x:Key="TitleLight">#1C1B1F</Color>
     <Color x:Key="TitleDark">#E6E1E5</Color>
